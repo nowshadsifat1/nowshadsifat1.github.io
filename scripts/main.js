@@ -49,11 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Application submitted successfully!');
                 form.reset();
             } else {
-                throw new Error('Failed to submit application');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to submit application');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while submitting the application. Please try again later.');
+            alert(`An error occurred while submitting the application: ${error.message}`);
         }
     }
 
