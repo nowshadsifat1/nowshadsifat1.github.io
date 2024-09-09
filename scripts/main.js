@@ -30,24 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData(form);
-        const applicationData = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('/api/submit-application', {
+            const response = await fetch('https://formspree.io/f/your-form-id', {
                 method: 'POST',
+                body: formData,
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(applicationData),
+                    'Accept': 'application/json'
+                }
             });
 
             if (response.ok) {
                 const result = await response.json();
-                generateQRCode(result.applicationId);
                 applicationCount++;
                 setTimeout(() => applicationCount--, rateLimitDuration);
                 alert('Application submitted successfully!');
                 form.reset();
+                // Note: QR code generation is removed as we don't have an application ID
             } else {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Failed to submit application');
@@ -56,16 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
             alert(`An error occurred while submitting the application: ${error.message}`);
         }
-    }
-
-    function generateQRCode(applicationId) {
-        const qrCodeContainer = document.getElementById('qrCode');
-        qrCodeContainer.innerHTML = '';
-        new QRCode(qrCodeContainer, {
-            text: `https://sifats-images.me/pending.html?id=${applicationId}`,
-            width: 128,
-            height: 128,
-        });
     }
 
     function toggleTheme() {
