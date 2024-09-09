@@ -17,8 +17,12 @@ async function readJSONFile(filePath) {
         const data = await fs.readFile(filePath, 'utf8');
         return JSON.parse(data);
     } catch (error) {
+        if (error.code === 'ENOENT') {
+            // File doesn't exist, return an empty array
+            return [];
+        }
         console.error(`Error reading file ${filePath}:`, error);
-        return [];
+        throw error;
     }
 }
 
@@ -27,6 +31,7 @@ async function writeJSONFile(filePath, data) {
         await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     } catch (error) {
         console.error(`Error writing file ${filePath}:`, error);
+        throw error;
     }
 }
 
@@ -47,6 +52,7 @@ app.post('/api/submit-application', async (req, res) => {
         res.status(500).json({ error: 'Failed to submit application' });
     }
 });
+
 
 app.post('/api/admin-login', async (req, res) => {
     try {
