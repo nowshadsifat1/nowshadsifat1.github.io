@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Applications - Admin Panel</title>
+    <link rel="stylesheet" href="styles/pending.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="approved.html">Approved Students</a></li>
+                <li><a href="pending.html">Pending Applications</a></li>
+            </ul>
+        </nav>
+        <div class="theme-toggle">
+            <button id="themeToggle">Toggle Dark/Light Mode</button>
+        </div>
+    </header>
+
+    <main>
+        <h1>Pending Applications</h1>
+        <div id="loginForm">
+            <h2>Admin Login</h2>
+            <form id="adminLogin">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+        <div id="applicationList" style="display: none;">
+            <input type="text" id="searchInput" placeholder="Search applications...">
+            <div id="applications"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Summer Class Registration Admin Panel. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="scripts/pending.js"></script>
+</body>
+</html>

@@ -1,24 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Class Registration</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-    <div class="background">
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-    <form>
-        <h3>Staff Login</h3>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="approved.html">Approved Students</a></li>
+                <li><a href="pending.html">Pending Applications</a></li>
+            </ul>
+        </nav>
+        <div class="theme-toggle">
+            <button id="themeToggle">Toggle Dark/Light Mode</button>
+        </div>
+    </header>
 
-        <label for="username">Email</label>
-        <input type="text" placeholder="Email" id="username">
+    <main>
+        <h1>Summer Class Registration</h1>
+        <form id="registrationForm">
+            <div id="studentForms">
+                <div class="student-form">
+                    <h2>Student Information</h2>
+                    <label for="studentName">Student Name:</label>
+                    <input type="text" id="studentName" name="studentName" required>
 
-        <label for="password">Password</label>
-        <input type="password" placeholder="Password" id="password">
+                    <label for="schoolGrade">School Grade:</label>
+                    <input type="number" id="schoolGrade" name="schoolGrade" required>
 
-        <button>Log In</button>
-    </form>
+                    <label for="class">Desired Class:</label>
+                    <select id="class" name="class" required>
+                        <option value="">Select a class</option>
+                        <option value="math">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="english">English</option>
+                        <option value="history">History</option>
+                    </select>
+
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="button" id="addStudent">Add Another Student</button>
+
+            <h2>Parent Information</h2>
+            <label for="parentName">Parent Name:</label>
+            <input type="text" id="parentName" name="parentName" required>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <button type="submit">Submit Application</button>
+        </form>
+
+        <div id="qrCode"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Summer Class Registration. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approved Students - Admin Panel</title>
+    <link rel="stylesheet" href="styles/approved.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="approved.html">Approved Students</a></li>
+                <li><a href="pending.html">Pending Applications</a></li>
+            </ul>
+        </nav>
+        <div class="theme-toggle">
+            <button id="themeToggle">Toggle Dark/Light Mode</button>
+        </div>
+    </header>
+
+    <main>
+        <h1>Approved Students</h1>
+        <div id="filterOptions">
+            <label for="paidFilter">Filter by Payment Status:</label>
+            <select id="paidFilter">
+                <option value="all">All</option>
+                <option value="paid">Paid</option>
+                <option value="unpaid">Unpaid</option>
+            </select>
+        </div>
+        <input type="text" id="searchInput" placeholder="Search students...">
+        <div id="studentList"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Summer Class Registration Admin Panel. All rights reserved.</p>
+    </footer>
+
+    <script src="scripts/approved.js"></script>
+</body>
+</html>
