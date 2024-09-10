@@ -1,0 +1,13 @@
+[
+    {
+        "id": 1,
+        "studentName": "John Doe",
+        "parentName": "Jane Doe",
+        "phoneNumber": "123-456",
+        "grade": "5",
+        "class": "Quran",
+        "gender": "Male",
+        "sibling": null,
+        "status": "pending"
+    }
+]
