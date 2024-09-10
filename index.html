@@ -3,370 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islamic Education Center</title>
+    <title>Summer Class Registration</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="#registration">Registration</a></li>
-                <li><a href="#pending" id="pendingLink">Pending</a></li>
-                <li><a href="#accepted" id="acceptedLink">Accepted</a></li>
-            </ul>
-        </nav>
-        <div class="theme-toggle">
-            <button id="themeToggle">Toggle Theme</button>
-        </div>
+        <h1>Summer Class Registration</h1>
+        <button id="theme-toggle">Light/Dark Mode</button>
     </header>
 
-    <main>
-        <section id="registration">
-            <h1>Student Registration</h1>
-            <form id="registrationForm">
-                <label for="studentName">Student Name:</label>
-                <input type="text" id="studentName" required>
-
-                <label for="parentName">Parent Name:</label>
-                <input type="text" id="parentName" required>
-
-                <div id="phoneNumbers">
-                    <label for="phone1">Phone Number:</label>
-                    <input type="tel" id="phone1" required>
-                    <button type="button" id="addPhone">Add Phone Number</button>
-                </div>
-
-                <label for="grade">Grade in School:</label>
-                <input type="number" id="grade" required>
-
-                <label for="class">Class:</label>
+    <!-- Registration Form -->
+    <section id="registration-section" class="active">
+        <h2>Student Registration</h2>
+        <form id="registration-form">
+            <label>Student Name: <input type="text" id="student-name" required></label>
+            <label>Parent's Name: <input type="text" id="parent-name" required></label>
+            <label>Phone Number(s): <input type="text" id="phone-number" required></label>
+            <label>Grade in School: <input type="number" id="grade" required></label>
+            <label>Class: 
                 <select id="class" required>
-                    <option value="">Select a class</option>
-                    <option value="beginnerQuida">Beginner Quida</option>
-                    <option value="advancedQuida">Advanced Quida</option>
-                    <option value="juzAmma">Juz Amma</option>
-                    <option value="quran">Quran</option>
-                    <option value="hifzBoys">Hifz Boys</option>
-                    <option value="hifzGirls">Hifz Girls</option>
+                    <option value="Beginner Quida">Beginner Quida</option>
+                    <option value="Advanced Quida">Advanced Quida</option>
+                    <option value="Juz Amma">Juz Amma</option>
+                    <option value="Quran">Quran</option>
+                    <option value="Hifz Boys">Hifz Boys</option>
+                    <option value="Hifz Girls">Hifz Girls</option>
                 </select>
-
-                <label for="gender">Gender:</label>
+            </label>
+            <label>Gender:
                 <select id="gender" required>
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
+            </label>
+            <label>Has Siblings? 
+                <input type="checkbox" id="has-siblings">
+            </label>
 
-                <label for="hasSibling">Do you have a sibling to register?</label>
-                <input type="checkbox" id="hasSibling">
-
-                <div id="siblingForm" style="display: none;">
-                    <h2>Sibling Information</h2>
-                    <label for="siblingName">Sibling Name:</label>
-                    <input type="text" id="siblingName">
-
-                    <label for="siblingGrade">Sibling Grade:</label>
-                    <input type="number" id="siblingGrade">
-
-                    <label for="siblingAge">Sibling Age:</label>
-                    <input type="number" id="siblingAge">
-
-                    <label for="siblingClass">Sibling Class:</label>
-                    <select id="siblingClass">
-                        <option value="">Select a class</option>
-                        <option value="beginnerQuida">Beginner Quida</option>
-                        <option value="advancedQuida">Advanced Quida</option>
-                        <option value="juzAmma">Juz Amma</option>
-                        <option value="quran">Quran</option>
-                        <option value="hifzBoys">Hifz Boys</option>
-                        <option value="hifzGirls">Hifz Girls</option>
+            <!-- Sibling Form -->
+            <div id="sibling-section" style="display:none;">
+                <h3>Sibling Information</h3>
+                <label>Sibling Name: <input type="text" id="sibling-name"></label>
+                <label>Sibling Grade: <input type="number" id="sibling-grade"></label>
+                <label>Sibling Class: 
+                    <select id="sibling-class">
+                        <option value="Beginner Quida">Beginner Quida</option>
+                        <option value="Advanced Quida">Advanced Quida</option>
+                        <option value="Juz Amma">Juz Amma</option>
+                        <option value="Quran">Quran</option>
+                        <option value="Hifz Boys">Hifz Boys</option>
+                        <option value="Hifz Girls">Hifz Girls</option>
                     </select>
-                </div>
-
-                <button type="submit">Submit Registration</button>
-            </form>
-        </section>
-
-        <section id="pending" style="display: none;">
-            <h1>Pending Registrations</h1>
-            <input type="text" id="pendingSearch" placeholder="Search by name, ID, or tag">
-            <div id="pendingResults"></div>
-            <div id="pendingPagination"></div>
-        </section>
-
-        <section id="accepted" style="display: none;">
-            <h1>Accepted Registrations</h1>
-            <input type="text" id="acceptedSearch" placeholder="Search by name, ID, or tag">
-            <div id="acceptedResults"></div>
-            <div id="acceptedPagination"></div>
-        </section>
-
-        <div id="authModal" class="modal">
-            <div class="modal-content">
-                <h2>Authentication Required</h2>
-                <form id="authForm">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" required>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" required>
-                    <button type="submit">Login</button>
-                </form>
+                </label>
+                <button type="button" id="add-sibling">Add Another Sibling</button>
             </div>
+
+            <button type="submit">Submit Registration</button>
+        </form>
+    </section>
+
+    <!-- Pending Applications Section -->
+    <section id="pending-section">
+        <h2>Pending Registrations</h2>
+        <input type="text" id="search" placeholder="Search by name or tag">
+        <div id="pending-list"></div>
+    </section>
+
+    <!-- Login Modal for Admin Pages -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h3>Admin Login</h3>
+            <label>Username: <input type="text" id="username" required></label>
+            <label>Password: <input type="password" id="password" required></label>
+            <button id="login-btn">Login</button>
         </div>
-    </main>
-
-    <script>
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-        });
-
-        // Phone number addition
-        const addPhoneButton = document.getElementById('addPhone');
-        const phoneNumbersDiv = document.getElementById('phoneNumbers');
-        let phoneCount = 1;
-
-        addPhoneButton.addEventListener('click', () => {
-            phoneCount++;
-            const newPhoneInput = document.createElement('input');
-            newPhoneInput.type = 'tel';
-            newPhoneInput.id = `phone${phoneCount}`;
-            newPhoneInput.required = true;
-            phoneNumbersDiv.insertBefore(newPhoneInput, addPhoneButton);
-        });
-
-        // Sibling form toggle
-        const hasSiblingCheckbox = document.getElementById('hasSibling');
-        const siblingForm = document.getElementById('siblingForm');
-
-        hasSiblingCheckbox.addEventListener('change', () => {
-            siblingForm.style.display = hasSiblingCheckbox.checked ? 'block' : 'none';
-        });
-
-        // Registration form submission
-        const registrationForm = document.getElementById('registrationForm');
-        registrationForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(registrationForm);
-            const registrationData = Object.fromEntries(formData);
-
-            // Add phone numbers
-            registrationData.phoneNumbers = [];
-            for (let i = 1; i <= phoneCount; i++) {
-                const phoneNumber = document.getElementById(`phone${i}`).value;
-                if (phoneNumber) {
-                    registrationData.phoneNumbers.push(phoneNumber);
-                }
-            }
-
-            // Add sibling information if applicable
-            if (hasSiblingCheckbox.checked) {
-                registrationData.sibling = {
-                    name: document.getElementById('siblingName').value,
-                    grade: document.getElementById('siblingGrade').value,
-                    age: document.getElementById('siblingAge').value,
-                    class: document.getElementById('siblingClass').value
-                };
-            }
-
-            // Generate a random ID for the registration
-            registrationData.id = Math.random().toString(36).substr(2, 9);
-
-            try {
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(registrationData),
-                });
-
-                if (response.ok) {
-                    alert('Registration submitted successfully!');
-                    registrationForm.reset();
-                } else {
-                    alert('Error submitting registration. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again later.');
-            }
-        });
-
-        // Authentication modal
-        const authModal = document.getElementById('authModal');
-        const authForm = document.getElementById('authForm');
-        const pendingLink = document.getElementById('pendingLink');
-        const acceptedLink = document.getElementById('acceptedLink');
-
-        function showAuthModal(targetSection) {
-            authModal.style.display = 'block';
-            authForm.onsubmit = (e) => {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                if (username === 'admin' && password === 'admin') {
-                    authModal.style.display = 'none';
-                    showSection(targetSection);
-                } else {
-                    alert('Invalid credentials');
-                }
-            };
-        }
-
-        pendingLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showAuthModal('pending');
-        });
-
-        acceptedLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showAuthModal('accepted');
-        });
-
-        // Section display functions
-        function showSection(sectionId) {
-            document.getElementById('registration').style.display = 'none';
-            document.getElementById('pending').style.display = 'none';
-            document.getElementById('accepted').style.display = 'none';
-            document.getElementById(sectionId).style.display = 'block';
-
-            if (sectionId === 'pending') {
-                loadPendingRegistrations();
-            } else if (sectionId === 'accepted') {
-                loadAcceptedRegistrations();
-            }
-        }
-
-        // Load pending registrations
-        async function loadPendingRegistrations() {
-            try {
-                const response = await fetch('/api/pending');
-                const pendingData = await response.json();
-                displayRegistrations(pendingData, 'pendingResults', 'pendingPagination', true);
-            } catch (error) {
-                console.error('Error loading pending registrations:', error);
-            }
-        }
-
-        // Load accepted registrations
-        async function loadAcceptedRegistrations() {
-            try {
-                const response = await fetch('/api/accepted');
-                const acceptedData = await response.json();
-                displayRegistrations(acceptedData, 'acceptedResults', 'acceptedPagination', false);
-            } catch (error) {
-                console.error('Error loading accepted registrations:', error);
-            }
-        }
-
-        // Display registrations
-        function displayRegistrations(data, resultsDivId, paginationDivId, isPending) {
-            const resultsDiv = document.getElementById(resultsDivId);
-            const paginationDiv = document.getElementById(paginationDivId);
-            resultsDiv.innerHTML = '';
-            paginationDiv.innerHTML = '';
-
-            const itemsPerPage = 20;
-            const totalPages = Math.ceil(data.length / itemsPerPage);
-
-            function showPage(page) {
-                resultsDiv.innerHTML = '';
-                const start = (page - 1) * itemsPerPage;
-                const end = start + itemsPerPage;
-                const pageData = data.slice(start, end);
-
-                pageData.forEach(registration => {
-                    const registrationBox = document.createElement('div');
-                    registrationBox.className = 'registration-box';
-                    registrationBox.innerHTML = `
-                        <h3>Registration #${registration.id}</h3>
-                        <p>Student: ${registration.studentName}</p>
-                        <p>Parent: ${registration.parentName}</p>
-                        <p>Phone: ${registration.phoneNumbers[0]}</p>
-                        ${isPending ? '<button class="accept-btn">Accept</button>' : ''}
-                        ${isPending ? '<button class="reject-btn">Reject</button>' : ''}
-                    `;
-                    resultsDiv.appendChild(registrationBox);
-
-                    if (isPending) {
-                        registrationBox.querySelector('.accept-btn').addEventListener('click', () => acceptRegistration(registration.id));
-                        registrationBox.querySelector('.reject-btn').addEventListener('click', () => rejectRegistration(registration.id));
-                    }
-                });
-
-                updatePagination(page, totalPages);
-            }
-
-            function updatePagination(currentPage, totalPages) {
-                paginationDiv.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const pageButton = document.createElement('button');
-                    pageButton.textContent = i;
-                    pageButton.addEventListener('click', () => showPage(i));
-                    if (i === currentPage) {
-                        pageButton.classList.add('active');
-                    }
-                    paginationDiv.appendChild(pageButton);
-                }
-            }
-
-            showPage(1);
-        }
-
-        // Accept registration
-        async function acceptRegistration(id) {
-            try {
-                const response = await fetch(`/api/accept/${id}`, { method: 'POST' });
-                if (response.ok) {
-                    alert('Registration accepted');
-                    loadPendingRegistrations();
-                } else {
-                    alert('Error accepting registration');
-                }
-            } catch (error) {
-                console.error('Error accepting registration:', error);
-            }
-        }
-
-        // Reject registration
-        async function rejectRegistration(id) {
-            try {
-                const response = await fetch(`/api/reject/${id}`, { method: 'POST' });
-                if (response.ok) {
-                    alert('Registration rejected');
-                    loadPendingRegistrations();
-                } else {
-                    alert('Error rejecting registration');
-                }
-            } catch (error) {
-                console.error('Error rejecting registration:', error);
-            }
-        }
-
-        // Search functionality
-        const pendingSearch = document.getElementById('pendingSearch');
-        const acceptedSearch = document.getElementById('acceptedSearch');
-
-        pendingSearch.addEventListener('input', () => performSearch('pending'));
-        acceptedSearch.addEventListener('input', () => performSearch('accepted'));
-
-        async function performSearch(section) {
-            const searchTerm = document.getElementById(`${section}Search`).value.toLowerCase();
-            try {
-                const response = await fetch(`/api/${section}`);
-                const data = await response.json();
-                const filteredData = data.filter(registration => 
-                    registration.studentName.toLowerCase().includes(searchTerm) ||
-                    registration.id.toLowerCase().includes(searchTerm) ||
-                    (registration.tags && registration.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
-                );
-                displayRegistrations(filteredData, `${section}Results`, `${section}Pagination`, section === 'pending');
-            } catch (error) {
-                console.error(`Error searching ${section} registrations:`, error);
-            }
-        }
-    </script>
+    </div>
 </body>
 </html>
