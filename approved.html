@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approved Registrations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f4f7f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 80%;
+      max-width: 1000px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: 700;
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-box input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 300px;
+    }
+
+    .registrations {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .registration-box {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .registration-box:hover {
+      background-color: #eaf6ff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .registration-box h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2em;
+    }
+
+    .registration-box p {
+      margin: 5px 0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Approved Registrations</h1>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search...">
+    </div>
+    <div id="registrations" class="registrations"></div>
+  </div>
+
+  <script>
+    const registrationsContainer = document.getElementById('registrations');
+    const searchInput = document.getElementById('searchInput');
+
+    function renderRegistrations(data) {
+      registrationsContainer.innerHTML = '';
+      data.approved.forEach((reg) => {
+        const box = document.createElement('div');
+        box.className = 'registration-box';
+        box.innerHTML = `
+          <h3>${reg.applicationId}</h3>
+          <p>Student: ${reg.studentName}</p>
+          <p>Parent: ${reg.parentName}</p>
+          <p>Phone: ${reg.phoneNumber}</p>
+          <p>Class: ${reg.class}</p>
+        `;
+        registrationsContainer.appendChild(box);
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const searchValue = this.value.toLowerCase();
+      const data = JSON.parse(localStorage.getItem('registrationData')) || { pending: [], approved: [] };
+      const filtered = data.approved.filter(reg => 
+        reg.studentName.toLowerCase().includes(searchValue) ||
+        reg.parentName.toLowerCase().includes(searchValue) ||
+        reg.phoneNumber.toLowerCase().includes(searchValue) ||
+        reg.class.toLowerCase().includes(searchValue)
+      );
+      renderRegistrations({ approved: filtered });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const data = JSON.parse(localStorage.getItem('registrationData')) || { pending: [], approved: [] };
+      renderRegistrations(data);
+    });
+  </script>
+</body>
+</html>
