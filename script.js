@@ -1,70 +1,108 @@
-// Light/Dark Mode Toggle
-const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
+// Global registration array to simulate database
+let registrations = JSON.parse(localStorage.getItem('registrations')) || [];
 
-// Registration Form Submission
-document.getElementById('registration-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    let registrationData = {
-        studentName: document.getElementById('student-name').value,
-        parentName: document.getElementById('parent-name').value,
-        phoneNumber: document.getElementById('phone-number').value,
-        grade: document.getElementById('grade').value,
-        class: document.getElementById('class').value,
-        gender: document.getElementById('gender').value,
-        sibling: document.getElementById('has-siblings').checked ? {
-            siblingName: document.getElementById('sibling-name').value,
-            siblingGrade: document.getElementById('sibling-grade').value,
-            siblingClass: document.getElementById('sibling-class').value
-        } : null
-    };
-
-    // Save to JSON (simulated here, replace with actual method for file handling)
-    console.log('Registration Saved:', registrationData);
-    alert('Registration submitted!');
-});
-
-// Display Pending Registrations
-function displayPendingRegistrations() {
-    // Fetch from JSON (for simulation purposes, we use an array)
-    const pendingRegistrations = [
-        { id: 1, studentName: 'John Doe', parentName: 'Jane Doe', phoneNumber: '123-456' },
-        { id: 2, studentName: 'Alice Smith', parentName: 'Robert Smith', phoneNumber: '789-012' }
-    ];
-
-    const pendingList = document.getElementById('pending-list');
-    pendingList.innerHTML = ''; // Clear existing entries
-
-    pendingRegistrations.forEach(reg => {
-        let regBox = document.createElement('div');
-        regBox.className = 'pending-box';
-        regBox.innerHTML = `
-            <h3>#${reg.id} - ${reg.studentName}</h3>
-            <p>Parent: ${reg.parentName}</p>
-            <p>Phone: ${reg.phoneNumber}</p>
-        `;
-        pendingList.appendChild(regBox);
-    });
+// Form submission logic
+function generateRandomID() {
+  return Math.random().toString(36).substring(2, 7).toUpperCase(); // Generate 5-character random ID
 }
 
-// Toggle Sibling Form
-document.getElementById('has-siblings').addEventListener('change', function() {
-    const siblingSection = document.getElementById('sibling-section');
-    siblingSection.style.display = this.checked ? 'block' : 'none';
+// On form submission
+document.getElementById('registrationForm')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const studentName = document.getElementById('studentName').value;
+  const parentName = document.getElementById('parentName').value;
+  const phoneNumber = document.getElementById('phoneNumber').value;
+  const grade = document.getElementById('grade').value;
+  const studentClass = document.getElementById('class').value;
+  const gender = document.getElementById('gender').value;
+  const hasSibling = document.getElementById('hasSibling').checked;
+  const siblingName = document.getElementById('siblingName').value || null;
+
+  const registration = {
+    id: Date.now(),
+    applicationId: generateRandomID(),
+    studentName,
+    parentName,
+    phoneNumber,
+    grade,
+    studentClass,
+    gender,
+    siblingName,
+    status: 'pending',
+  };
+
+  registrations.push(registration);
+  localStorage.setItem('registrations', JSON.stringify(registrations));
+
+  alert("Registration submitted successfully!");
+  window.location.href = 'pending.html';
 });
 
-// Admin Login
-document.getElementById('login-btn').addEventListener('click', function() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
 
-    if (username === 'admin' && password === 'admin') {
-        alert('Login successful');
-        document.getElementById('login-modal').style.display = 'none';
-    } else {
-        alert('Invalid credentials');
-    }
-});
+// Show pending registrations
+function showPendingRegistrations() {
+  const pendingRegistrations = registrations.filter(reg => reg.status === 'pending');
+  const pendingList = document.getElementById('pendingRegistrations');
+  pendingList.innerHTML = '';
+
+  pendingRegistrations.forEach(reg => {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <div>
+        <h3>${reg.studentName} - ${reg.id}</h3>
+        <p>Parent: ${reg.parentName}</p>
+        <p>Phone: ${reg.phoneNumber}</p>
+        <button onclick="approveRegistration(${reg.id})">Approve</button>
+        <button onclick="denyRegistration(${reg.id})">Deny</button>
+      </div>
+    `;
+    pendingList.appendChild(div);
+  });
+}
+
+// Show approved registrations
+function showApprovedRegistrations() {
+  const approvedRegistrations = registrations.filter(reg => reg.status === 'approved');
+  const approvedList = document.getElementById('approvedRegistrations');
+  approvedList.innerHTML = '';
+
+  approvedRegistrations.forEach(reg => {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <div>
+        <h3>${reg.studentName} - ${reg.id}</h3>
+        <p>Parent: ${reg.parentName}</p>
+        <p>Phone: ${reg.phoneNumber}</p>
+      </div>
+    `;
+    approvedList.appendChild(div);
+  });
+}
+
+// Approve registration
+function approveRegistration(id) {
+  registrations = registrations.map(reg => {
+    if (reg.id === id) reg.status = 'approved';
+    return reg;
+  });
+  localStorage.setItem('registrations', JSON.stringify(registrations));
+  showPendingRegistrations();
+}
+
+// Deny registration
+function denyRegistration(id) {
+  registrations = registrations.map(reg => {
+    if (reg.id === id) reg.status = 'denied';
+    return reg;
+  });
+  localStorage.setItem('registrations', JSON.stringify(registrations));
+  showPendingRegistrations();
+}
+
+// Load the appropriate page content
+if (window.location.pathname.includes('pending.html')) {
+  showPendingRegistrations();
+} else if (window.location.pathname.includes('approved.html')) {
+  showApprovedRegistrations();
+}
