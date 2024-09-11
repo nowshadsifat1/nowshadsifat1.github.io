@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Registrations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f4f7f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 80%;
+      max-width: 1000px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: 700;
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-box input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 300px;
+    }
+
+    .registrations {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .registration-box {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .registration-box:hover {
+      background-color: #eaf6ff;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .registration-box h3 {
+      margin: 0;
+      color: #333;
+      font-size: 1.2em;
+    }
+
+    .registration-box p {
+      margin: 5px 0;
+      color: #555;
+    }
+
+    .details {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .details h3 {
+      margin-top: 0;
+      font-size: 1.5em;
+      color: #333;
+    }
+
+    .details button {
+      background: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .details button:hover {
+      background-color: #0056b3;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .details button.deny {
+      background: #dc3545;
+    }
+
+    .details button.deny:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pending Registrations</h1>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search...">
+    </div>
+    <div id="registrations" class="registrations"></div>
+  </div>
+
+  <div id="details" class="details">
+    <h3>Application Details</h3>
+    <div id="detailsContent"></div>
+    <button id="approveBtn">Approve</button>
+    <button id="denyBtn" class="deny">Deny</button>
+  </div>
+
+  <script>
+    const registrationsContainer = document.getElementById('registrations');
+    const detailsContainer = document.getElementById('details');
+    const detailsContent = document.getElementById('detailsContent');
+    const approveBtn = document.getElementById('approveBtn');
+    const denyBtn = document.getElementById('denyBtn');
+    const searchInput = document.getElementById('searchInput');
+
+    function renderRegistrations(data) {
+      registrationsContainer.innerHTML = '';
+      data.pending.forEach((reg) => {
+        const box = document.createElement('div');
+        box.className = 'registration-box';
+        box.innerHTML = `
+          <h3>${reg.applicationId}</h3>
+          <p>Student: ${reg.studentName}</p>
+          <p>Parent: ${reg.parentName}</p>
+          <p>Phone: ${reg.phoneNumber}</p>
+          <p>Class: ${reg.class}</p>
+        `;
+        box.addEventListener('click', () => {
+          detailsContent.innerHTML = `
+            <p><strong>Student Name:</strong> ${reg.studentName}</p>
+            <p><strong>Parent Name:</strong> ${reg.parentName}</p>
+            <p><strong>Phone Number(s):</strong> ${reg.phoneNumber}</p>
+            <p><strong>Grade:</strong> ${reg.grade}</p>
+            <p><strong>Class:</strong> ${reg.class}</p>
+            <p><strong>Gender:</strong> ${reg.gender}</p>
+            <p><strong>Sibling Name:</strong> ${reg.siblingName || 'N/A'}</p>
+            <p><strong>Sibling Grade:</strong> ${reg.siblingGrade || 'N/A'}</p>
+            <p><strong>Sibling Class:</strong> ${reg.siblingClass || 'N/A'}</p>
+          `;
+          detailsContainer.style.display = 'block';
+
+          approveBtn.onclick = () => {
+            reg.status = 'approved';
+            updateRegistrations(data);
+          };
+
+          denyBtn.onclick = () => {
+            reg.status = 'denied';
+            updateRegistrations(data);
+          };
+        });
+        registrationsContainer.appendChild(box);
+      });
+    }
+
+    function updateRegistrations(data) {
+      localStorage.setItem('registrationData', JSON.stringify(data));
+      renderRegistrations(data);
+      detailsContainer.style.display = 'none';
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const searchValue = this.value.toLowerCase();
+      const data = JSON.parse(localStorage.getItem('registrationData')) || { pending: [], approved: [] };
+      const filtered = data.pending.filter(reg => 
+        reg.studentName.toLowerCase().includes(searchValue) ||
+        reg.parentName.toLowerCase().includes(searchValue) ||
+        reg.phoneNumber.toLowerCase().includes(searchValue) ||
+        reg.class.toLowerCase().includes(searchValue)
+      );
+      renderRegistrations({ pending: filtered });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const data = JSON.parse(localStorage.getItem('registrationData')) || { pending: [], approved: [] };
+      renderRegistrations(data);
+    });
+  </script>
+</body>
+</html>
