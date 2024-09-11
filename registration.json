@@ -1,13 +1,13 @@
 [
-    {
-        "id": 1,
-        "studentName": "John Doe",
-        "parentName": "Jane Doe",
-        "phoneNumber": "123-456",
-        "grade": "5",
-        "class": "Quran",
-        "gender": "Male",
-        "sibling": null,
-        "status": "pending"
-    }
+  {
+    "studentName": "John Doe",
+    "parentsName": "Jane Doe",
+    "phoneNumber": "123456789",
+    "grade": "3",
+    "className": "Beginner Quida",
+    "gender": "Male",
+    "siblingInfo": null,
+    "status": "pending",
+    "id": 123456
+  }
 ]
